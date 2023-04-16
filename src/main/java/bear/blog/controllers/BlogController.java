@@ -1,11 +1,10 @@
-package controllers;
+package bear.blog.controllers;
 
-import models.Blog;
-import org.apache.coyote.Response;
+import bear.blog.models.Blog;
+import bear.blog.services.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import services.BlogService;
 
 import java.util.List;
 
@@ -37,3 +36,4 @@ public class BlogController {
     }
 
 }
+

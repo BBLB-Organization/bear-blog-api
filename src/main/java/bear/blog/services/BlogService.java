@@ -1,8 +1,8 @@
-package services;
+package bear.blog.services;
 
-import models.Blog;
+import bear.blog.models.Blog;
+import bear.blog.repositories.BlogRepository;
 import org.springframework.stereotype.Service;
-import repositories.BlogRepository;
 
 import java.util.List;
 

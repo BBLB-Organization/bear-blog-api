@@ -1,4 +1,4 @@
-package models;
+package bear.blog.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,3 +36,4 @@ public class Blog {
         this.blogText = blogText;
     }
 }
+

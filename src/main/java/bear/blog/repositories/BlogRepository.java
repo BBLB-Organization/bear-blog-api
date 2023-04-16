@@ -1,6 +1,6 @@
-package repositories;
+package bear.blog.repositories;
 
-import models.Blog;
+import bear.blog.models.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
