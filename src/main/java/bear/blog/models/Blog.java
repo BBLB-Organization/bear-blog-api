@@ -13,13 +13,15 @@ public class Blog {
 
     String blogText;
     String blogTitle;
+    Integer imageId;
 
     public Blog(){}
 
-    public Blog(Integer id, String blogText, String blogTitle){
+    public Blog(Integer id, String blogText, String blogTitle, Integer imageId){
         this.id = id;
         this.blogText = blogText;
         this.blogTitle = blogTitle;
+        this.imageId = imageId;
     }
 
     public Integer getId() {
@@ -44,6 +46,14 @@ public class Blog {
 
     public void setBlogTitle(String blogTitle) {
         this.blogTitle = blogTitle;
+    }
+
+    public Integer getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Integer imageId) {
+        this.imageId = imageId;
     }
 }
 
