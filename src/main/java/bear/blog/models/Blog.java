@@ -12,12 +12,14 @@ public class Blog {
     Integer id;
 
     String blogText;
+    String blogTitle;
 
     public Blog(){}
 
-    public Blog(Integer id, String blogText){
+    public Blog(Integer id, String blogText, String blogTitle){
         this.id = id;
         this.blogText = blogText;
+        this.blogTitle = blogTitle;
     }
 
     public Integer getId() {
@@ -34,6 +36,14 @@ public class Blog {
 
     public void setBlogText(String blogText) {
         this.blogText = blogText;
+    }
+
+    public String getBlogTitle() {
+        return blogTitle;
+    }
+
+    public void setBlogTitle(String blogTitle) {
+        this.blogTitle = blogTitle;
     }
 }
 
