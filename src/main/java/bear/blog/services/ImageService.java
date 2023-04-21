@@ -21,6 +21,10 @@ public class ImageService {
         return imageRepository.findByName(name);
     }
 
+    public Image getImageById(Integer id){
+        return imageRepository.getReferenceById(id);
+    }
+
     public List<String> getAllImageNames(){
         List<Image> listOfImages = imageRepository.findAll();
         List<String> listOfImageNames = new ArrayList<>();

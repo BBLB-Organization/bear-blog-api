@@ -33,6 +33,12 @@ public class ImageController {
         return new ResponseEntity<>(image.getData(),HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<byte[]> getImageById(@PathVariable Integer id){
+        Image image = imageService.getImageById(id);
+        return new ResponseEntity<>(image.getData(),HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<String>> getAllImageNames(){
         List allImageNames = imageService.getAllImageNames();
