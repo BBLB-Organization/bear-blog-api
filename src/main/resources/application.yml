@@ -1,9 +1,7 @@
 # MySQL DB config
 spring:
   datasource:
-    url: mysql://${MYSQLUSER}:${MYSQLPASSWORD}@${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
-    username: ${MYSQLUSER}
-    password: ${MYSQLPASSWORD}
+    url: jdbc:mysql://${MYSQLUSER}:${MYSQLPASSWORD}@${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
     hikari:
       maximum-pool-size: 2
   jackson:
@@ -12,7 +10,7 @@ spring:
       fail-on-empty-beans: false
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
