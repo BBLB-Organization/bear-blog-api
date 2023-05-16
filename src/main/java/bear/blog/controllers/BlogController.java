@@ -40,6 +40,14 @@ public class BlogController {
         return response;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Blog> getBlogById(@PathVariable Integer id){
+        Blog blog = this.blogService.getBlogById(id);
+        ResponseEntity response;
+        response = new ResponseEntity(blog, HttpStatus.OK);
+        return response;
+    }
+
     @PostMapping
     public ResponseEntity addBlog(@RequestBody Blog blog){
         Blog newBlog = this.blogService.addBlog(blog);

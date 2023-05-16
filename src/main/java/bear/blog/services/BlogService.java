@@ -19,6 +19,10 @@ public class BlogService {
         return this.blogRepository.findAll();
     }
 
+    public Blog getBlogById(Integer id){
+        return this.blogRepository.getReferenceById(id);
+    }
+
     public Blog addBlog(Blog blog){
         return this.blogRepository.save(blog);
     }
