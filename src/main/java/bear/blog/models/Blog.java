@@ -15,15 +15,17 @@ public class Blog {
     String blogTitle;
     Integer imageId;
     Integer tagListId;
+    String commentId;
 
     public Blog(){}
 
-    public Blog(Integer id, String blogText, String blogTitle, Integer imageId, Integer tagListId){
+    public Blog(Integer id, String blogText, String blogTitle, Integer imageId, Integer tagListId, String commentId){
         this.id = id;
         this.blogText = blogText;
         this.blogTitle = blogTitle;
         this.imageId = imageId;
         this.tagListId = tagListId;
+        this.commentId = commentId;
     }
 
     public Integer getId() {
@@ -64,6 +66,14 @@ public class Blog {
 
     public void setTagListId(Integer tagListId) {
         this.tagListId = tagListId;
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 }
 
