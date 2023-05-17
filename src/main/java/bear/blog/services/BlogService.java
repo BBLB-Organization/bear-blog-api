@@ -27,4 +27,10 @@ public class BlogService {
         return this.blogRepository.save(blog);
     }
 
+    public Blog updateBlog(Blog newBlog){
+        Blog oldBlog = this.blogRepository.getReferenceById(newBlog.getId());
+        oldBlog.setCommentId(newBlog.getCommentId());
+        return this.blogRepository.save(oldBlog);
+    }
+
 }
