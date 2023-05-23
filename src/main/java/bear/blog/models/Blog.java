@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 public class Blog {
@@ -16,16 +17,20 @@ public class Blog {
     Integer imageId;
     Integer tagListId;
     String commentId;
+    String userName;
+    LocalDate createdOn;
 
     public Blog(){}
 
-    public Blog(Integer id, String blogText, String blogTitle, Integer imageId, Integer tagListId, String commentId){
+    public Blog(Integer id, String blogText, String blogTitle, Integer imageId, Integer tagListId, String commentId, String userName, LocalDate createdOn){
         this.id = id;
         this.blogText = blogText;
         this.blogTitle = blogTitle;
         this.imageId = imageId;
         this.tagListId = tagListId;
         this.commentId = commentId;
+        this.userName = userName;
+        this.createdOn = createdOn;
     }
 
     public Integer getId() {
@@ -74,6 +79,22 @@ public class Blog {
 
     public void setCommentId(String commentId) {
         this.commentId = commentId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public LocalDate getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDate createdOn) {
+        this.createdOn = createdOn;
     }
 }
 
