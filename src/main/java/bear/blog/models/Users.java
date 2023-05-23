@@ -17,16 +17,18 @@ public class Users {
     String userName;
     String emailAddress;
     String password;
+    Boolean loggedIn;
 
     public Users(){}
 
-    public Users(Integer id, String firstName, String lastName, String userName, String emailAddress, String password) {
+    public Users(Integer id, String firstName, String lastName, String userName, String emailAddress, String password, Boolean loggedIn) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.emailAddress = emailAddress;
         this.password = password;
+        this.loggedIn = loggedIn;
     }
 
     public Integer getId() {
@@ -75,5 +77,13 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(Boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
 }

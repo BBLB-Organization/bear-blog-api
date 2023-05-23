@@ -18,6 +18,12 @@ public class UsersController {
         this.usersService = usersService;
     }
 
+    @GetMapping
+    public ResponseEntity checkIfUserLoggedIn(@RequestParam String emailAddress){
+        Boolean loggedIn = this.usersService.checkIfUserLoggedIn(emailAddress);
+        return new ResponseEntity(loggedIn, HttpStatus.OK);
+    }
+
     @PostMapping("register-user")
     public ResponseEntity registerUser(@RequestBody Users users){
         Users user = this.usersService.registerUser(users);
@@ -44,6 +50,7 @@ public class UsersController {
                 loggedInUser.setPassword("");
                 loggedInUser.setFirstName("");
                 loggedInUser.setLastName("");
+                loggedInUser.setLoggedIn(true);
                 return new ResponseEntity<>(loggedInUser, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Incorrect Email or Password", HttpStatus.UNAUTHORIZED);
