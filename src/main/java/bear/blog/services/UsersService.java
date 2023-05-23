@@ -23,6 +23,7 @@ public class UsersService {
 
     public Users registerUser(Users user){
         user.setPassword(passwordEncoder().encode(user.getPassword()));
+        user.setLoggedIn(false);
         return this.usersRepository.save(user);
     }
 
@@ -31,9 +32,13 @@ public class UsersService {
         if (user != null) {
             String encodedPassword = user.getPassword();
             if (passwordEncoder().matches(userProvidedPassword, encodedPassword)) {
+                user.setLoggedIn(true);
+                usersRepository.save(user);
                 return true;
             }
             else{
+                user.setLoggedIn(false);
+                usersRepository.save(user);
                 return false;
             }
         }
@@ -45,6 +50,19 @@ public class UsersService {
     public Users getUserByEmailAddress(String emailAddress){
         Users user = this.usersRepository.findByEmailAddress(emailAddress);
         return user;
+    }
+
+    public Boolean checkIfUserLoggedIn(String emailAddress){
+        Users user = this.usersRepository.findByEmailAddress(emailAddress);
+        Boolean loggedIn = (user != null) ? user.getLoggedIn() : false;
+        return loggedIn;
+    }
+
+    public Boolean logoutCurrentUser(String emailAddress){
+        Users currentUser = this.usersRepository.findByEmailAddress(emailAddress);
+        currentUser.setLoggedIn(false);
+        this.usersRepository.save(currentUser);
+        return currentUser.getLoggedIn();
     }
 
 
