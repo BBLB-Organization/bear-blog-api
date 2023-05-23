@@ -58,6 +58,13 @@ public class UsersService {
         return loggedIn;
     }
 
+    public Boolean logoutCurrentUser(String emailAddress){
+        Users currentUser = this.usersRepository.findByEmailAddress(emailAddress);
+        currentUser.setLoggedIn(false);
+        this.usersRepository.save(currentUser);
+        return currentUser.getLoggedIn();
+    }
+
 
 
 }

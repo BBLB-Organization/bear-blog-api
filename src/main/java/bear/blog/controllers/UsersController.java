@@ -60,4 +60,10 @@ public class UsersController {
         }
     }
 
+    @PutMapping("logout")
+    public ResponseEntity logoutCurrentUser(@RequestParam String emailAddress){
+        Boolean logoutCurrentUser = this.usersService.logoutCurrentUser(emailAddress);
+        return new ResponseEntity(logoutCurrentUser, HttpStatus.OK);
+    }
+
 }
