@@ -1,12 +1,10 @@
 package bear.blog.controllers;
 
 import bear.blog.services.EmailService;
+import bear.blog.services.VerificationCodeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/email")
@@ -14,19 +12,35 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmailController {
 
     private EmailService emailService;
+    private VerificationCodeService verificationCodeService;
 
-    public EmailController(EmailService emailService){
+    public EmailController(EmailService emailService, VerificationCodeService verificationCodeService){
         this.emailService = emailService;
+        this.verificationCodeService = verificationCodeService;
     }
 
     @PostMapping
-    public ResponseEntity sendEmail(){
+    public ResponseEntity sendEmail(@RequestParam String emailAddress){
         ResponseEntity response;
-        String emailAddressTo = "sample_gmail@gmail.com";
-        String subject = "Testing Spring Boot";
-        String body = "Testing Spring Boot capability to send emails";
-        this.emailService.sendEmail(emailAddressTo, subject, body);
-        response = new ResponseEntity("Email was successfully sent to: " +emailAddressTo + "SUBJECT: "+subject + "BODY: "+body, HttpStatus.OK);
+        String subject = "Forgot Password: Verification Code Provided";
+        Integer verificationCode = this.verificationCodeService.createVerificationCode(emailAddress);
+        String body = "VERIFICATION CODE FOR FORGOT PASSWORD: "+verificationCode;
+        this.emailService.sendEmail(emailAddress, subject, body);
+        response = new ResponseEntity("Email was successfully sent to: " +emailAddress, HttpStatus.OK);
         return response;
     }
+
+    @PutMapping("/check-verification-code")
+    public ResponseEntity checkVerificationCode(@RequestParam String userEmailAddress, @RequestParam Integer userGeneratedVerificationCode){
+        ResponseEntity response;
+        Boolean verificationCodeStatus = this.verificationCodeService.checkVerificationCode(userEmailAddress, userGeneratedVerificationCode);
+        if(verificationCodeStatus){
+            response = new ResponseEntity("Verification Code is CORRECT", HttpStatus.OK);
+        }
+        else{
+            response = new ResponseEntity("Verification code is INCORRECT!", HttpStatus.OK);
+        }
+        return response;
+    }
+
 }

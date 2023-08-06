@@ -1,7 +1,9 @@
 package bear.blog.services;
 
 import bear.blog.models.Users;
+import bear.blog.models.VerificationCode;
 import bear.blog.repositories.UsersRepository;
+import bear.blog.repositories.VerificationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,17 +13,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UsersService {
 
     private UsersRepository usersRepository;
+    private VerificationRepository verificationRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    public UsersService(UsersRepository usersRepository){
+    public UsersService(UsersRepository usersRepository, VerificationRepository verificationRepository){
         this.usersRepository = usersRepository;
+        this.verificationRepository = verificationRepository;
     }
 
     public Users registerUser(Users user){
+        //Add user to verification code schema for checking if they're a current user
+        String userEmailAddress = user.getEmailAddress();
+        VerificationCode newUser = new VerificationCode();
+        newUser.setHasVerificationCode(false);
+        newUser.setEmailAddress(userEmailAddress);
+        newUser.setVerificationCode(000000);
+        this.verificationRepository.save(newUser);
+
+        //Registering user to website
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         user.setLoggedIn(false);
         return this.usersRepository.save(user);
