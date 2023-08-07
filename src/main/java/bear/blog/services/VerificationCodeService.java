@@ -44,6 +44,16 @@ public class VerificationCodeService {
         }
     }
 
+    public Boolean checkIfValidEmailAddress(String emailAddress){
+        VerificationCode currentUser = this.verificationRepository.findByEmailAddress(emailAddress);
+        if(currentUser == null ||currentUser.getEmailAddress() == null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
     public Integer generateRandomCode(){
         Random randomNumber = new Random();
         Integer min = 100000;

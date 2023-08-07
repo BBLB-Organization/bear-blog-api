@@ -19,15 +19,21 @@ public class EmailController {
         this.verificationCodeService = verificationCodeService;
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity sendEmail(@RequestParam String emailAddress){
         ResponseEntity response;
-        String subject = "Forgot Password: Verification Code Provided";
-        Integer verificationCode = this.verificationCodeService.createVerificationCode(emailAddress);
-        String body = "VERIFICATION CODE FOR FORGOT PASSWORD: "+verificationCode;
-        this.emailService.sendEmail(emailAddress, subject, body);
-        response = new ResponseEntity("Email was successfully sent to: " +emailAddress, HttpStatus.OK);
-        return response;
+        Boolean isEmailValid = this.verificationCodeService.checkIfValidEmailAddress(emailAddress);
+        if(isEmailValid) {
+            String subject = "Forgot Password: Verification Code Provided";
+            Integer verificationCode = this.verificationCodeService.createVerificationCode(emailAddress);
+            String body = "VERIFICATION CODE FOR FORGOT PASSWORD: " + verificationCode;
+            this.emailService.sendEmail(emailAddress, subject, body);
+            response = new ResponseEntity("Email was successfully sent to: " + emailAddress, HttpStatus.OK);
+            return response;
+        }
+        else{
+            return new ResponseEntity("Email was not found", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/check-verification-code")
