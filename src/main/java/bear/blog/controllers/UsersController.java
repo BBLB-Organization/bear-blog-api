@@ -24,6 +24,19 @@ public class UsersController {
         return new ResponseEntity(loggedIn, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity getUserEmailAddressById(@PathVariable Integer id){
+        Users currentUser = this.usersService.getUserById(id);
+        if(currentUser != null){
+            String emailAddress = currentUser.getEmailAddress();
+            return new ResponseEntity(emailAddress, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity("Email not found!", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     @PostMapping("register-user")
     public ResponseEntity registerUser(@RequestBody Users users){
         Users user = this.usersService.registerUser(users);

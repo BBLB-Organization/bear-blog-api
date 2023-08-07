@@ -65,6 +65,11 @@ public class UsersService {
         return user;
     }
 
+    public Users getUserById(Integer userId){
+        Users currentUser = this.usersRepository.getReferenceById(userId);
+        return currentUser;
+    }
+
     public Boolean checkIfUserLoggedIn(String emailAddress){
         Users user = this.usersRepository.findByEmailAddress(emailAddress);
         Boolean loggedIn = (user != null) ? user.getLoggedIn() : false;
