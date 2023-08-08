@@ -33,11 +33,17 @@ public class VerificationCodeService {
 
     public Boolean checkVerificationCode(String emailAddress, Integer userCreatedVerificationCode){
         VerificationCode currentUser = this.verificationRepository.findByEmailAddress(emailAddress);
-        Integer computerGeneratedVerificationCode = currentUser.getVerificationCode();
-        if(computerGeneratedVerificationCode.equals(userCreatedVerificationCode)){
-            currentUser.setHasVerificationCode(false);
-            this.verificationRepository.save(currentUser);
-            return true;
+        Boolean hasUserInputVerificationCode = currentUser.getHasVerificationCode();
+        //Checks if user has already inputted verification code before
+        if(hasUserInputVerificationCode) {
+            Integer computerGeneratedVerificationCode = currentUser.getVerificationCode();
+            if (computerGeneratedVerificationCode.equals(userCreatedVerificationCode)) {
+                currentUser.setHasVerificationCode(false);
+                this.verificationRepository.save(currentUser);
+                return true;
+            } else {
+                return false;
+            }
         }
         else{
             return false;
