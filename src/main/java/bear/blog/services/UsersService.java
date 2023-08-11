@@ -1,7 +1,9 @@
 package bear.blog.services;
 
 import bear.blog.models.Users;
+import bear.blog.models.VerificationCode;
 import bear.blog.repositories.UsersRepository;
+import bear.blog.repositories.VerificationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,17 +13,29 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UsersService {
 
     private UsersRepository usersRepository;
+    private VerificationRepository verificationRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    public UsersService(UsersRepository usersRepository){
+    public UsersService(UsersRepository usersRepository, VerificationRepository verificationRepository){
         this.usersRepository = usersRepository;
+        this.verificationRepository = verificationRepository;
     }
 
     public Users registerUser(Users user){
+        //Add user to verification code schema for checking if they're a current user
+        String userEmailAddress = user.getEmailAddress();
+        VerificationCode newUser = new VerificationCode();
+        newUser.setHasVerificationCode(false);
+        newUser.setHasChangePasswordAuthorization(false);
+        newUser.setEmailAddress(userEmailAddress);
+        newUser.setVerificationCode(000000);
+        this.verificationRepository.save(newUser);
+
+        //Registering user to website
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         user.setLoggedIn(false);
         return this.usersRepository.save(user);
@@ -47,9 +61,36 @@ public class UsersService {
         }
     }
 
+    public Boolean changeCurrentUserPassword(String emailAddress, String newUserPassword){
+        Users currentUser = this.usersRepository.findByEmailAddress(emailAddress);
+        VerificationCode currentUserAuthorization = this.verificationRepository.findByEmailAddress(emailAddress);
+        Boolean isUserAuthorized;
+        if(currentUserAuthorization.getHasChangePasswordAuthorization()) {
+            //Update current user password while encrypting it
+            currentUser.setPassword(passwordEncoder().encode(newUserPassword));
+            currentUser.setLoggedIn(false);
+            this.usersRepository.save(currentUser);
+
+            //Update current user authorization to no longer be able to change password
+            currentUserAuthorization.setHasChangePasswordAuthorization(false);
+            this.verificationRepository.save(currentUserAuthorization);
+
+            isUserAuthorized = true;
+        }
+        else{
+            isUserAuthorized = false;
+        }
+        return isUserAuthorized;
+    }
+
     public Users getUserByEmailAddress(String emailAddress){
         Users user = this.usersRepository.findByEmailAddress(emailAddress);
         return user;
+    }
+
+    public Users getUserById(Integer userId){
+        Users currentUser = this.usersRepository.getReferenceById(userId);
+        return currentUser;
     }
 
     public Boolean checkIfUserLoggedIn(String emailAddress){
