@@ -73,6 +73,17 @@ public class UsersController {
         }
     }
 
+    @PutMapping("change-password")
+    public ResponseEntity changeCurrentUserPassword(@RequestParam String emailAddress, @RequestParam String newPassword){
+        Boolean hasUserUpdatedPassword = this.usersService.changeCurrentUserPassword(emailAddress, newPassword);
+        if(hasUserUpdatedPassword){
+            return new ResponseEntity("User has updated password successfully!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity("User is not authorize to update password", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     @PutMapping("logout")
     public ResponseEntity logoutCurrentUser(@RequestParam String emailAddress){
         Boolean logoutCurrentUser = this.usersService.logoutCurrentUser(emailAddress);

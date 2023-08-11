@@ -23,7 +23,6 @@ public class EmailService {
             helper.setText(body, true);
         } catch (MessagingException e) {
             e.printStackTrace();
-            // Handle the exception as needed
         }
 
         mailSender.send(message);

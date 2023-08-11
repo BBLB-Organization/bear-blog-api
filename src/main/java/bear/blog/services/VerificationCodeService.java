@@ -39,6 +39,7 @@ public class VerificationCodeService {
             Integer computerGeneratedVerificationCode = currentUser.getVerificationCode();
             if (computerGeneratedVerificationCode.equals(userCreatedVerificationCode)) {
                 currentUser.setHasVerificationCode(false);
+                currentUser.setHasChangePasswordAuthorization(true);
                 this.verificationRepository.save(currentUser);
                 return true;
             } else {

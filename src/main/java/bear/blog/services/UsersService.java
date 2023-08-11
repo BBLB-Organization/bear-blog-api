@@ -30,6 +30,7 @@ public class UsersService {
         String userEmailAddress = user.getEmailAddress();
         VerificationCode newUser = new VerificationCode();
         newUser.setHasVerificationCode(false);
+        newUser.setHasChangePasswordAuthorization(false);
         newUser.setEmailAddress(userEmailAddress);
         newUser.setVerificationCode(000000);
         this.verificationRepository.save(newUser);
@@ -58,6 +59,28 @@ public class UsersService {
         else {
             throw new IllegalArgumentException("User not found with email: " + email);
         }
+    }
+
+    public Boolean changeCurrentUserPassword(String emailAddress, String newUserPassword){
+        Users currentUser = this.usersRepository.findByEmailAddress(emailAddress);
+        VerificationCode currentUserAuthorization = this.verificationRepository.findByEmailAddress(emailAddress);
+        Boolean isUserAuthorized;
+        if(currentUserAuthorization.getHasChangePasswordAuthorization()) {
+            //Update current user password while encrypting it
+            currentUser.setPassword(passwordEncoder().encode(newUserPassword));
+            currentUser.setLoggedIn(false);
+            this.usersRepository.save(currentUser);
+
+            //Update current user authorization to no longer be able to change password
+            currentUserAuthorization.setHasChangePasswordAuthorization(false);
+            this.verificationRepository.save(currentUserAuthorization);
+
+            isUserAuthorized = true;
+        }
+        else{
+            isUserAuthorized = false;
+        }
+        return isUserAuthorized;
     }
 
     public Users getUserByEmailAddress(String emailAddress){

@@ -15,14 +15,16 @@ public class VerificationCode {
     String emailAddress;
     Integer verificationCode;
     Boolean hasVerificationCode;
+    Boolean hasChangePasswordAuthorization;
 
     public VerificationCode(){}
 
-    public VerificationCode(Integer id, String emailAddress, Integer verificationCode, Boolean hasVerificationCode) {
+    public VerificationCode(Integer id, String emailAddress, Integer verificationCode, Boolean hasVerificationCode, Boolean hasChangePasswordAuthorization) {
         this.id = id;
         this.emailAddress = emailAddress;
         this.verificationCode = verificationCode;
         this.hasVerificationCode = hasVerificationCode;
+        this.hasChangePasswordAuthorization = hasChangePasswordAuthorization;
     }
 
     public Integer getId() {
@@ -55,5 +57,13 @@ public class VerificationCode {
 
     public void setHasVerificationCode(Boolean hasVerificationCode) {
         this.hasVerificationCode = hasVerificationCode;
+    }
+
+    public Boolean getHasChangePasswordAuthorization() {
+        return hasChangePasswordAuthorization;
+    }
+
+    public void setHasChangePasswordAuthorization(Boolean hasChangePasswordAuthorization) {
+        this.hasChangePasswordAuthorization = hasChangePasswordAuthorization;
     }
 }
